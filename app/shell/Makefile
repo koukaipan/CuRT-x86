@@ -1,5 +1,5 @@
-# Tested on CodeSourcery G++ Lite 2008q1
-CROSS_COMPILE = arm-none-linux-gnueabi-
+# Tested on CodeSourcery G++ Lite 2009q3
+CROSS_COMPILE = arm-none-eabi-
 CURT_IMAGE = curt_image
 
 CC = $(CROSS_COMPILE)gcc

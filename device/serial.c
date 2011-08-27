@@ -36,7 +36,7 @@ void SerialInit(void)
 	
         /* Transmit Shift Register, Transmit Holding Register, FIFO
 	 * wait for ready */
-	while (!rFFLSR & 0x00000040 )
+	while ((!rFFLSR) & 0x00000040 )
 		/* wait */ ;
 
 	return;
