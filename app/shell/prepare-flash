@@ -1,0 +1,13 @@
+#!/bin/sh
+
+FLASH_IMAGE_NAME=flash-image
+
+rm -f $FLASH_IMAGE_NAME
+if [ -e curt_image.bin ]; then
+    dd of=$FLASH_IMAGE_NAME bs=1k count=16k if=/dev/zero
+    dd of=$FLASH_IMAGE_NAME bs=1k conv=notrunc if=curt_image.bin
+else
+    echo "Warning: no pre-built CuRT image file 'curt_image.bin' found."
+    echo "Please invoke 'make' to get one."
+    exit 1
+fi
