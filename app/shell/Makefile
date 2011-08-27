@@ -20,7 +20,8 @@ LDSCRIPT := ld-script.lds
 LDFLAGS = \
 	-nostdlib -static -e _start \
 	-p --no-undefined -X \
-	-T $(LDSCRIPT)
+	-T $(LDSCRIPT) \
+	-Map $(CURT_IMAGE).map
 
 OBJCOPYFLAGS = \
 	-O binary \
