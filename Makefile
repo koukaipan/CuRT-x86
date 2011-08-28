@@ -1,7 +1,7 @@
-#ARCH = x86
-#ARCH_SRC_DIR = arch/x86
-ARCH = pxa255
-ARCH_SRC_DIR = arch/arm/mach-pxa
+ARCH = x86
+ARCH_SRC_DIR = arch/x86
+#ARCH = pxa255
+#ARCH_SRC_DIR = arch/arm/mach-pxa
 
 #######################################################################
 # path setting
@@ -31,7 +31,8 @@ KERNEL_SRC = \
 	$(TOP_DIR)/kernel/ipc.c
 
 LIB_SRC = \
-	$(TOP_DIR)/lib/stdio.c 
+	$(TOP_DIR)/lib/stdio.c \
+	$(TOP_DIR)/lib/string.c
 
 SHELL_SRC = \
 	$(TOP_DIR)/app/shell/main.c

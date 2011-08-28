@@ -3,10 +3,7 @@
  */
 
 #include "lib/stdio.h"
-
-extern void SerialOutputByte(const char);
-extern int SerialIsReadyChar( void );
-extern char SerialIsGetChar( void );
+#include "kernel/console.h"
 
 /* internal helper functions */
 static void _PrintChar(char *fmt, char c);
@@ -129,7 +126,7 @@ int printf(const char *fmt, ...)
 
 static void _PrintChar(char *fmt, char c)
 {
-	SerialOutputByte(c);
+	console_putc(c);
 	return;
 }
 
@@ -139,11 +136,11 @@ static void _PrintDec(char *fmt, int l)
 	int remainder;
 	int count = 0;
 	if (l == 0) {
-		SerialOutputByte('0');
+		console_putc('0');
 		return;
 	}
 	if (l < 0) {
-		SerialOutputByte('-');
+		console_putc('-');
 		l = -l;
 	}
 	/* FIXME: we don't intend to handle the number bigger than 100000. */
@@ -214,11 +211,11 @@ static void _PrintHex(char *fmt, int l)
 			/* lower 4 bits */
 			if (leading_zero) {
 				if (flag0)
-					SerialOutputByte('0');
+					console_putc('0');
 				else
-					SerialOutputByte(' ');
+					console_putc(' ');
 			}
-			else SerialOutputByte(lHex);
+			else console_putc(lHex);
 			
 			flagcnt--;
 		}
@@ -243,11 +240,11 @@ static void _PrintHex(char *fmt, int l)
 			/* upper 4 bits */
 			if (leading_zero) {
 				if (flag0)
-					SerialOutputByte('0');
+					console_putc('0');
 				else
-					SerialOutputByte(' ');
+					console_putc(' ');
 			}
-			else SerialOutputByte(uHex);
+			else console_putc(uHex);
 			
 			/* lower 4 bits: ascii code */
 			if (lHex != 0)
@@ -260,12 +257,12 @@ static void _PrintHex(char *fmt, int l)
 			/* lower 4 bits */
 			if (leading_zero) {
 				if (flag0)
-					SerialOutputByte('0');
+					console_putc('0');
 				else
-					SerialOutputByte(' ');
+					console_putc(' ');
 			}
 			else
-				SerialOutputByte(lHex);
+				console_putc(lHex);
 		}
 	}
 	else {
@@ -284,7 +281,7 @@ static void _PrintHex(char *fmt, int l)
 			else
 				uHex += 'A' - 10;
 			if (!leading_zero)
-				SerialOutputByte(uHex);
+				console_putc(uHex);
 			
 			if (lHex != 0 || i == 3)
 				leading_zero = false;
@@ -293,7 +290,7 @@ static void _PrintHex(char *fmt, int l)
 			else
 				lHex += 'A' - 10;
 			if (!leading_zero)
-				SerialOutputByte(lHex);
+				console_putc(lHex);
 		}
 	}
 	return;
@@ -304,50 +301,30 @@ static void _PrintString(char *fmt, char *s)
 	if (!fmt || !s)
 		return;
 	while (*s)
-		SerialOutputByte(*s++);
+		console_putc(*s++);
 	return;
 }
 
 int getc(void)
 {               
-	while (!SerialIsReadyChar())
-		/* Keep waiting */ ;
-	return SerialIsGetChar() & 0xFF;
+	return console_getc();
 }
 
 int gets(char *s)
 {
-	int cnt = 0;
-	char  c;
-
-	while ((c = getc()) != CR) {
-		if (c != BS) {
-			cnt++;
-			*s++ = c;
-			printf("%c",c );
-		}
-		else {
-			if (cnt > 0) {
-				cnt--;
-				*s-- = ' ';
-				printf("\b \b");
-			}
-		}
-	}
-	*s = 0;
-	return cnt;
+	return console_gets(s);
 }
 
 int putchar(int c)
 {
-	SerialOutputByte(c);
+	console_putc(c);
 	return c;
 }
 
 int puts(const char *s)
 {
 	while (*s)
-		SerialOutputByte(*s++);
+		console_putc(*s++);
 	return 1;
 }
 

@@ -9,6 +9,7 @@
 #include "kernel/thread.h"
 #include "kernel/kernel.h"
 #include "kernel/sync.h"
+#include "kernel/console.h"
 #include "port.h"	/* inclusion specific to hardware */
 
 static thread_struct shell_thread, stat_thread, info_thread;
@@ -27,12 +28,11 @@ static tid_t hello_tid, hello2_tid;
 
 static sem_struct sem;
 
-extern void SerialInit();
-
 int main()
 {
-	SerialInit();
-	init_interrupt_control();
+	arch_init();
+	console_init();
+
 	init_curt();
 
 	sem_init(&sem, 1);
@@ -74,7 +74,7 @@ int main()
 	printf("##################################\n"
 	       "#       Start CuRT....           #\n"
 	       "##################################\n");
-
+	arch_start();
 	start_curt();
 
 	/* endless loop */
@@ -114,13 +114,7 @@ static void shell_thread_func(void *pdata)
 		}
 		else if (!strcmp(buf, "clear")) {
 			/* FIXME: dirty trick to clean screen */
-			printf("\n\n\n\n\n\n\n\n\n\n"
-			       "\n\n\n\n\n\n\n\n\n\n"
-			       "\n\n\n\n\n\n\n\n\n\n"
-			       "\n\n\n\n\n\n\n\n\n\n"
-			       "\n\n\n\n\n\n\n\n\n\n"
-			       "\n\n\n\n\n\n\n\n\n\n"
-			       "\n\n\n\n\n\n\n\n\n\n");
+			console_clear();
 		}
 		else if (!strcmp(buf, "hello")) {
 			thread_resume(hello_tid);

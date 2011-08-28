@@ -34,6 +34,7 @@ HW_DEP_ASM_SRC = \
 
 HW_DEP_C_SRC = \
 	device/serial.c \
+	device/console.c \
 	port.c
 
 HW_DEP_C_OBJ = $(HW_DEP_C_SRC:.c=.o)

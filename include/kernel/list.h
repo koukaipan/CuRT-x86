@@ -29,10 +29,6 @@
  *  \brief Generic linked-list.
  */
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-
 #include "types.h"
 
 typedef struct list_node {

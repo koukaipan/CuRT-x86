@@ -89,3 +89,14 @@ void init_interrupt_control()
 	INT_REG(INT_ICMR) = 0;
 }
 
+/**
+ * @brief Architecture dependent Initialization
+ *
+ * call other init fns.
+ */
+void arch_init()
+{
+	init_interrupt_control();
+	
+	init_os_timer();
+}

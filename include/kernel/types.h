@@ -58,6 +58,7 @@ typedef int* stk_t;
 typedef int err_t;
 typedef int cpu_sr_t;
 typedef int tid_t;
+typedef unsigned int size_t;
 typedef unsigned long	ulong;
 typedef unsigned short	ushort;
 typedef unsigned char	uchar;
@@ -73,5 +74,12 @@ typedef char *va_list;
 #define va_start(ap, p)		(ap = (char *) (&(p)+1))
 #define va_arg(ap, type)	((type *) (ap += sizeof(type)))[-1]
 #define va_end(ap)
+
+#undef offsetof
+#ifdef __compiler_offsetof
+#define offsetof(TYPE,MEMBER) __compiler_offsetof(TYPE,MEMBER)
+#else
+#define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
+#endif
 
 #endif

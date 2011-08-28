@@ -1,7 +1,7 @@
 #ifndef CURT_MACH_PXA255_PORT_H
 #define CURT_MACH_PXA255_PORT_H
 
-#include "arch/arm/mach-pxa/pxa255.h"
+#include "pxa255.h"
 #include "kernel/types.h"
 #include "kernel/thread.h"
 
@@ -24,6 +24,8 @@ extern void context_switch();
 extern int context_switch_in_interrupt();
 extern cpu_sr_t save_cpu_sr();
 extern void restore_cpu_sr();
+
+#define arch_start() {}
 
 #endif /* ! CURT_MACH_PXA255_PORT_H */
 
